@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from . import views
-from .api import ProjectViewSet, BannerViewSet
+from .api import BannerViewSet, ProjectViewSet
 
 router = DefaultRouter()
 router.register(r'projects', ProjectViewSet, basename='project')
@@ -16,7 +16,8 @@ urlpatterns = [
     path('create/', views.project_create, name='project_create'),
     path('<int:project_id>/edit/', views.project_edit, name='project_edit'),
     path('<int:project_id>/delete/', views.project_delete, name='project_delete'),
-    path('projects/', views.project_list, name='project_list'),
+    # path('projects/', views.project_list, name='project_list'),
+    # path('projects/', ProjectViewSet.as_view(), name='project_list'),
     path('banner-images/', views.banner_image_list, name='banner_image_list'),
     path('banner-images/upload/', views.upload_banner_image, name='upload_banner_image'),
     path('banner-images/delete/<int:image_id>/', views.delete_banner_image, name='delete_banner_image'),

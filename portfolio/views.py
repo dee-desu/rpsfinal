@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import ProjectForm, BannerImageForm
 from .models import Project, ProjectImage, BannerImage
-
+from django.contrib.auth.decorators import login_required, permission_required
+from rest_framework.permissions import AllowAny
 
 def project_list(request):
     projects = Project.objects.all()
@@ -76,6 +77,7 @@ def project_delete(request, project_id):
 
 def banner_image_list(request):
     banner_images = BannerImage.objects.all()
+
     return render(request, 'your_template/banner_image_list.html', {'banner_images': banner_images})
 
 

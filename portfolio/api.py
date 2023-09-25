@@ -1,50 +1,69 @@
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import ModelViewSet
-
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from django.db.models import Q
 from .models import Project, BannerImage
 from .serializers import ProjectSerializer, BannerImageSerializer
 
 
 class ProjectViewSet(ModelViewSet):
+    permission_classes=[AllowAny]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
     def get_queryset(self):
         category_name = self.request.query_params.get("category_name", None)
         category_id = self.request.query_params.get("category_id", None)
-        query = self.queryset.filter(category__catname=category_name) if category_name is not None else self.queryset
-        query = self.queryset.filter(category__id=category_id) if category_id is not None else query
-
+        if not category_name and not category_id :
+            return self.queryset
+        
+        query = self.queryset.filter(
+            Q (category__catname=category_name) |
+            Q (category__id=category_id)
+        )
+        # query = self.queryset.filter(category__catname=category_name) if category_name is not None else self.queryset
+        # query = self.queryset.filter(category__id=category_id) if category_id is not None else query
         return query
+    
+    # def get(self, request):
+    #     try:
+    #         queryset = self.get_queryset()
+    #         serializer = self.serializer_class(queryset, many=True)
+    #         return Response({"data": serializer.data}, status=200)
+    #     except Exception as e:
+    #         print(f"{str(e) = }")
+    #         return Response({"message": str(e)}, status=400)
 
-    def create(self, request, *args, **kwargs):
-        images = request.data.pop("images") if 'images' in request.data else None
-        serializer = self.get_serializer(data=request.data, context={'request': request, 'images': images})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            error_message = str(serializer.errors)
-            return Response({'message': error_message}, status=HTTP_400_BAD_REQUEST)
+    # def create(self, request, *args, **kwargs):
+    #     images = request.data.pop("images") if 'images' in request.data else None
+    #     serializer = self.get_serializer(data=request.data, context={'request': request, 'images': images})
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=HTTP_201_CREATED)
+    #     else:
+    #         error_message = str(serializer.errors)
+    #         return Response({'message': error_message}, status=HTTP_400_BAD_REQUEST)
 
-    def update(self, request, *args, **kwargs):
-        images = request.data.pop("images") if 'images' in request.data else None
+    # def update(self, request, *args, **kwargs):
+    #     images = request.data.pop("images") if 'images' in request.data else None
 
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial,
-                                         context={'request': request, 'images': images})
+    #     partial = kwargs.pop('partial', False)
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance, data=request.data, partial=partial,
+    #                                      context={'request': request, 'images': images})
 
-        if serializer.is_valid():
-            self.perform_update(serializer)
-            return Response(serializer.data, status=HTTP_200_OK)
-        else:
-            error_message = str(serializer.errors)
-            return Response({'message': error_message}, status=HTTP_400_BAD_REQUEST)
+    #     if serializer.is_valid():
+    #         self.perform_update(serializer)
+    #         return Response(serializer.data, status=HTTP_200_OK)
+    #     else:
+    #         error_message = str(serializer.errors)
+    #         return Response({'message': error_message}, status=HTTP_400_BAD_REQUEST)
 
 
 class BannerViewSet(ModelViewSet):
+    permission_classes=[AllowAny]
     queryset = BannerImage.objects.all()
     serializer_class = BannerImageSerializer
 

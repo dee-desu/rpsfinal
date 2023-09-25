@@ -39,9 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'portfolio',
+
+    # Third Parties Applications
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
+
+    # Local Parties Applications
+    'accounts',
+    'portfolio',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -59,12 +65,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
+
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
+    'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
     ),
 }
 
@@ -139,7 +149,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = BASE_DIR / 'static'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -150,4 +160,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Media Settings
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
+
+AUTH_USER_MODEL="accounts.CustomUser"
