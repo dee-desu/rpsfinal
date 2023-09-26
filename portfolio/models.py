@@ -36,3 +36,10 @@ class BannerImage(models.Model):
 
     def __str__(self):
         return str(self.image)
+
+
+class LogoImages(models.Model):
+    image = models.ImageField(upload_to='logo_images/')
+
+    def __str__(self):
+        return str (self.image)

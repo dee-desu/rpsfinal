@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from .models import Category, Project, ProjectImage, BannerImage
+from .models import Category, Project, ProjectImage, BannerImage, LogoImages
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -106,3 +106,9 @@ class BannerImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = BannerImage
         fields = ('image',)
+
+class LogoImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogoImages
+        fields = ('image',)
+

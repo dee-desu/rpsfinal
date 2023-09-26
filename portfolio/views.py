@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import ProjectForm, BannerImageForm
-from .models import Project, ProjectImage, BannerImage
+from .forms import ProjectForm, BannerImageForm,LogoImagesForm
+from .models import Project, ProjectImage, BannerImage,LogoImages
 from django.contrib.auth.decorators import login_required, permission_required
 from rest_framework.permissions import AllowAny
 
@@ -97,3 +97,30 @@ def delete_banner_image(request, image_id):
     if request.method == 'POST':
         image.delete()
     return redirect('banner_image_list')
+
+
+# Logo slider
+
+
+def logo_image_list(request):
+    logo_images = LogoImages.objects.all()
+
+    return render(request, 'your_template/logo_image_list.html', {'logo_images': logo_images})
+
+
+def upload_logo_images(request):
+    if request.method == 'POST':
+        form = LogoImagesForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('logo_image_list')
+    else:
+        form = LogoImagesForm()
+    return render(request, 'your_template/upload_logo_images.html', {'form': form})
+
+
+def delete_logo_images(request, image_id):
+    image = get_object_or_404(LogoImages, id=image_id)
+    if request.method == 'POST':
+        image.delete()
+    return redirect('logo_image_list')

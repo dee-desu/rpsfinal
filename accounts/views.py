@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
-from portfolio.models import Project, BannerImage, ProjectImage
-from portfolio.forms import ProjectForm, BannerImageForm
+from portfolio.models import Project, BannerImage, ProjectImage, LogoImages
+from portfolio.forms import ProjectForm, BannerImageForm, LogoImagesForm
 
 
 
@@ -160,3 +160,43 @@ def delete_banner_image(request, image_id):
     if request.method == 'DELETE':
         image.delete()
         return JsonResponse({'message': 'Banner image deleted successfully'})
+
+
+@api_view(['GET'])
+@csrf_exempt
+@login_required
+def logo_image_list(request):
+    """
+    Retrieve a list of all logo images.
+    """
+    logo_images = LogoImages.objects.all()
+    logo_data = [{'id': image.id, 'image_url': image.image.url} for image in logo_images]
+
+    return JsonResponse({'logo_images': logo_data})
+
+@api_view(['POST'])
+@csrf_exempt
+@login_required
+def upload_logo_image(request):
+    """
+    Upload a new logo image.
+    """
+    if request.method == 'POST':
+        form = LogoImagesForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'message': 'Logo image uploaded successfully'})
+        else:
+            return JsonResponse({'error': 'Invalid form data'}, status=400)
+
+@api_view(['DELETE'])
+@csrf_exempt
+@login_required
+def delete_logo_image(request, image_id):
+    """
+    Delete a specific logo image.
+    """
+    image = get_object_or_404(LogoImages, id=image_id)
+    if request.method == 'DELETE':
+        image.delete()
+        return JsonResponse({'message': 'Logo image deleted successfully'})

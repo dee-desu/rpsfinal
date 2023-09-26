@@ -4,8 +4,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from django.db.models import Q
-from .models import Project, BannerImage
-from .serializers import ProjectSerializer, BannerImageSerializer
+from .models import Project, BannerImage, LogoImages
+from .serializers import ProjectSerializer, BannerImageSerializer, LogoImageSerializer
 
 
 class ProjectViewSet(ModelViewSet):
@@ -66,6 +66,11 @@ class BannerViewSet(ModelViewSet):
     permission_classes=[AllowAny]
     queryset = BannerImage.objects.all()
     serializer_class = BannerImageSerializer
+
+class LogoViewSet(ModelViewSet):
+    permission_classes=[AllowAny]
+    queryset = LogoImages.objects.all()
+    serializer_class = LogoImageSerializer    
 
 # from .models import ProjectImage, Category
 # from rest_framework import generics
