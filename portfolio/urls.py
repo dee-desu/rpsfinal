@@ -2,11 +2,12 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from . import views
-from .api import BannerViewSet, ProjectViewSet
+from .api import BannerViewSet, ProjectViewSet,LogoViewSet
 
 router = DefaultRouter()
 router.register(r'projects', ProjectViewSet, basename='project')
 router.register(r'banners', BannerViewSet, basename='banner')
+router.register(r'logos', LogoViewSet, basename='logos')
 
 urlpatterns = [
     path('api/', include(router.urls)),
