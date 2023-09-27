@@ -4,7 +4,7 @@ from .models import Project,BannerImage,LogoImages
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ['name', 'date', 'category', 'description', 'thumbnail', 'locations']
+        fields = "__all__"
 
     # Define widgets and form field options here
 

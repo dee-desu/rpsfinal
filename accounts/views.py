@@ -67,6 +67,7 @@ def project_create(request):
     Create a new project.
     """
     if request.method == 'POST':
+        print(f"{request.data = }")
         form = ProjectForm(request.POST, request.FILES)
         if form.is_valid():
             project = form.save(commit=False)
@@ -130,7 +131,7 @@ def banner_image_list(request):
     Retrieve a list of all banner images.
     """
     banner_images = BannerImage.objects.all()
-    banner_data = [{'id': image.id, 'image_url': image.image.url} for image in banner_images]
+    banner_data = [{'id': image.id, 'image_url': request.build_absolute_uri(image.image.url)} for image in banner_images]
 
     return JsonResponse({'banner_images': banner_data})
 
@@ -170,8 +171,7 @@ def logo_image_list(request):
     Retrieve a list of all logo images.
     """
     logo_images = LogoImages.objects.all()
-    logo_data = [{'id': image.id, 'image_url': image.image.url} for image in logo_images]
-
+    logo_data = [{'id': image.id, 'image_url': request.build_absolute_uri(image.image.url)} for image in logo_images]
     return JsonResponse({'logo_images': logo_data})
 
 @api_view(['POST'])

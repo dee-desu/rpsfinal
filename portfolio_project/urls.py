@@ -30,7 +30,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls'))
 ]
 
-# http://127.0.0.1:8000/accounts/projects/
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
