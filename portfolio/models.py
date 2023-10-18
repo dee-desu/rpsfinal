@@ -39,7 +39,8 @@ class BannerImage(models.Model):
 
 
 class LogoImages(models.Model):
+    SUPPORTED_FORMATS = ['image/png', 'image/svg+xml']
     image = models.ImageField(upload_to='logo_images/')
-
+    
     def __str__(self):
         return str (self.image)
