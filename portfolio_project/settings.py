@@ -29,9 +29,20 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 ALLOWED_CORS=['*']
 ALLOWED_CSRF=['*']
+CORS_ALLOWED_ORIGINS=['http://46.101.137.125:8000',]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
 
+CORS_ALLOW_HEADERS = ('content-disposition', 'accept-encoding', 'content-type', 'accept', 'origin', 'authorization', 'auth')
 # Application definition
 
 INSTALLED_APPS = [
@@ -116,10 +127,10 @@ DATABASES = {
 #     },
    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rps',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',   
-        'HOST': '46.101.137.125',
+        'NAME': 'mydb',
+        'USER': 'rps',
+        'PASSWORD': 'rps1234',   
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
